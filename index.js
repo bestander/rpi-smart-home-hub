@@ -22,11 +22,10 @@ noble.on('discover', function(peripheral) {
             console.log("connected to ", peripheral.advertisement.localName);
 
             peripheral.discoverServices([BlunoServiceUUID], function(err, services) {
-                var serialCharacteristic;
                 services[0].discoverCharacteristics([BlunoServiceSerialCharacteristicUUID], function(error, characteristics) {
-                    serialCharacteristic = characteristics[0];
+                    var serialCharacteristic = characteristics[0];
                     console.log("sending to serialCharacteristic " + serialCharacteristic.uuid);
-                    serialCharacteristic.write(new Buffer("test", "utf-8"), true);
+                    serialCharacteristic.write(new Buffer([1]), true);
                     serialCharacteristic.on('data', function(data, isNotification){
                         console.log("Data from " + serialCharacteristic.uuid + ": " + data + ": length: " + data.length, data);
                     });
